@@ -39,6 +39,8 @@ begin
 					pwm_out <= '1';
 				end if;
 			end if;
+
+			counter_reg := counter_reg + 1;
 		end if;
 	end process;
 end architecture;
