@@ -30,8 +30,10 @@ begin
 			counter_reg := (others => '0');
 			active := '0';
 		elsif rising_edge(clk) then
-			if counter_reg = 0 and en = '1' then 
-				active := '1';
+			if counter_reg = 0 then 
+				if en = '1' then 
+					active := '1';
+				end if;
 			end if;
 
 			if active = '1' then 

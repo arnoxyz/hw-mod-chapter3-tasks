@@ -20,8 +20,8 @@ architecture arch of running_light is
 
 	type fsm_state_t is (IDLE, A, B); 
 	signal state, state_next: fsm_state_t;
-	signal leds_internal : std_logic_vector(LEDS_WIDTH-1 downto 0) := (others=>'0');
-	signal leds_internal_next : std_logic_vector(LEDS_WIDTH-1 downto 0) := (others=>'0');
+	signal leds_internal : std_ulogic_vector(LEDS_WIDTH-1 downto 0) := (others=>'0');
+	signal leds_internal_next : std_ulogic_vector(LEDS_WIDTH-1 downto 0) := (others=>'0');
 begin
 
 	registers: process(clk, res_n) is
@@ -60,7 +60,7 @@ begin
 				state_next <= B;
 
 			when B =>
-				leds_internal_next <= std_logic_vector(shift_right((unsigned(leds_internal)),1)); 
+				leds_internal_next <= std_ulogic_vector(shift_right((unsigned(leds_internal)),1)); 
 
 				if(leds(0) = '1') then 
 					state_next <= IDLE;
