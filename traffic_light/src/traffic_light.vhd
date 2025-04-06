@@ -126,7 +126,7 @@ end architecture;
 --TODO: think through the model on paper
 --TODO: just write the design after the paper model
 --TODO: work thorugh the 1-6 step process
-	--TODO: 1
+	--TODO: 1 
 	--TODO: 2
 	--TODO: 3
 	--TODO: 4
