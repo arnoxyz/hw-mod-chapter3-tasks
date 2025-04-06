@@ -20,7 +20,7 @@ architecture beh of timer is
   type record_t is record 
     state : state_t;
     clk_cnt : unsigned(7 downto 0);
-    sec_cnt : unsigned(3 downto 0);
+    sec_cnt : std_ulogic_vector(3 downto 0);
   end record;
   
   signal s, s_nxt : record_t;
@@ -39,5 +39,13 @@ begin
 
   comb : process(all) is 
   begin 
+    s_nxt <= s;
+    ssd <= to_segs(s.sec_cnt); 
+
+    case s.state is
+      when IDLE =>
+      when DELAY =>
+      when TICK =>
+    end case;
   end process;
 end architecture;
