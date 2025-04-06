@@ -14,7 +14,7 @@ begin
 		clk    => clk,
 		res_n  => keys(0),
 		en     => keys(1),
-		tick   => ledg(0),
+		tick   => ledg(0)
 	);
 
 end architecture;

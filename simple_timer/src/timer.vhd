@@ -43,3 +43,42 @@ begin
         end if;
       end process;
 end architecture;
+
+
+
+--other implementation, that uses the 3 process approach (sync_reg, next_state_logic, output_logic)
+architecture beh2 of timer is
+  subtype cnt_t is unsigned(N-1 downto 0);
+  signal cnt, cnt_nxt : cnt_t;
+  constant MAX_VALUE : positive := 2**N-1;
+begin 
+  reg : process(clk, res_n) is 
+  begin 
+      if res_n = '0' then 
+        cnt <= (others=>'0'); 
+      elsif rising_edge(clk) then 
+        cnt <= cnt_nxt;
+      end if;
+  end process;
+
+  nxt_state_logic : process(all) is 
+  begin 
+    cnt_nxt <= cnt_nxt;
+
+    if en='1' then 
+      cnt_nxt <= cnt + 1;
+    end if;
+  end process;
+
+  output_logic : process(all) is 
+  begin 
+    tick <= '0';
+
+    if en='1' and to_integer(cnt)=MAX_VALUE then 
+      tick <= '1';
+    end if;
+  end process;
+end architecture;
+
+
+
