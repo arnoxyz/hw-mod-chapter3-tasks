@@ -16,15 +16,19 @@ entity timer is
 end entity;
 
 architecture beh of timer is
+  constant CLK_FREQ : integer := 50_000_0000;  --50MHz
+
+
   type state_t is (IDLE, DELAY, TICK);  
   type record_t is record 
     state : state_t;
-    clk_cnt : unsigned(7 downto 0);
+    clk_cnt : unsigned(log2c(CLK_FREQ)-1 downto 0);
     sec_cnt : std_ulogic_vector(3 downto 0);
   end record;
   
   signal s, s_nxt : record_t;
   constant reset_val : record_t := (state => IDLE, clk_cnt => (others=>'0'), sec_cnt => (others=>'0'));
+
 begin 
   
   sync : process(clk, res_n) is 
@@ -44,8 +48,27 @@ begin
 
     case s.state is
       when IDLE =>
+        ssd <= SSD_CHAR_OFF;
+  
+        if btn_n = '0' then 
+          s_nxt.state <= DELAY;
+        end if;
+
       when DELAY =>
+        s_nxt.clk_cnt <= s.clk_cnt+1;
+
+        if s.clk_cnt >= CLK_FREQ -1 then 
+          s_nxt.state <= TICK;
+        end if;
+
       when TICK =>
+        s_nxt.state <= IDLE;
+        s_nxt.clk_cnt <= (others=>'0');
+
+        if unsigned(s.sec_cnt) < 15 then 
+          s_nxt.sec_cnt <= std_ulogic_vector(unsigned(s.sec_cnt)+1);
+          s_nxt.state <= DELAy;
+        end if;
     end case;
   end process;
 end architecture;
