@@ -7,6 +7,9 @@ use work.util_pkg.all;
 
 
 entity timer is
+  generic(
+    CLK_FREQ : integer := 50_000_000 --50_000_000 50MHz
+  );
   port(
     btn_n   : in std_ulogic; 
     clk     : in std_ulogic;
@@ -16,18 +19,17 @@ entity timer is
 end entity;
 
 architecture beh of timer is
-  constant CLK_FREQ : integer := 50_000_0000;  --50MHz
-
-
   type state_t is (IDLE, DELAY, TICK);  
   type record_t is record 
     state : state_t;
-    clk_cnt : unsigned(log2c(CLK_FREQ)-1 downto 0);
+    clk_cnt : unsigned(log2c(CLK_FREQ) downto 0);
     sec_cnt : std_ulogic_vector(3 downto 0);
   end record;
   
   signal s, s_nxt : record_t;
   constant reset_val : record_t := (state => IDLE, clk_cnt => (others=>'0'), sec_cnt => (others=>'0'));
+
+  constant COUNT_TO : integer := 2; --15 normally for sim 2
 
 begin 
   
@@ -65,9 +67,9 @@ begin
         s_nxt.state <= IDLE;
         s_nxt.clk_cnt <= (others=>'0');
 
-        if unsigned(s.sec_cnt) < 15 then 
+        if unsigned(s.sec_cnt) < COUNT_TO then 
           s_nxt.sec_cnt <= std_ulogic_vector(unsigned(s.sec_cnt)+1);
-          s_nxt.state <= DELAy;
+          s_nxt.state <= DELAY;
         end if;
     end case;
   end process;
