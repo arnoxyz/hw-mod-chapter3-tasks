@@ -22,9 +22,8 @@ add wave -noupdate /timer_tb/en
 add wave -noupdate /timer_tb/tick
 add wave -noupdate /timer_tb/N
 add wave -noupdate /timer_tb/clk_period
-add wave -noupdate -expand /timer_tb/uut/counter
 TreeUpdate [SetDefaultTree]
-WaveRestoreCursors {{Cursor 1} {32408 ps} 0}
+WaveRestoreCursors {{Cursor 1} {34932 ps} 0}
 quietly wave cursor active 1
 configure wave -namecolwidth 150
 configure wave -valuecolwidth 100
@@ -40,4 +39,4 @@ configure wave -griddelta 40
 configure wave -timeline 0
 configure wave -timelineunits ns
 update
-WaveRestoreZoom {0 ps} {5844 ps}
+WaveRestoreZoom {0 ps} {18595 ps}

@@ -82,3 +82,38 @@ end architecture;
 
 
 
+--other implementation using 2 process method =recommendation to to be used(sync_reg and merge next_state and output_logic = better overview)
+architecture beh3 of timer is 
+  subtype timer_t is unsigned(N-1 downto 0);
+  signal cnt, cnt_nxt : timer_t;
+  constant MAX_VAL : positive := 2**N-1;
+begin 
+
+  sync : process(clk, res_n) is 
+  begin 
+    if res_n = '0' then 
+      cnt <= (others=>'0');
+    elsif rising_edge(clk) then 
+      cnt <= cnt_nxt;
+    end if;
+  end process; 
+
+  comb : process(all) is 
+  begin 
+    --set default case her (no latches pls!!1)
+    cnt_nxt <= cnt_nxt;
+    tick <= '0';
+
+    if en = '1' then 
+      cnt_nxt <= cnt + 1;
+    end if;
+
+    if en = '1' and to_integer(cnt) = MAX_VAL then 
+      tick <= '1';
+    end if;
+
+  end process;
+end architecture;
+
+
+
