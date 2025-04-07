@@ -25,7 +25,14 @@ entity traffic_light is
 	);
 end entity;
 
---TODO:Repeat the modelling process (understand the traffic_light model)
+--Repeat the modelling process (understand the traffic_light model)
+--IDLE = no pedestraian, car traffic is just green
+--after pedestrian presses the btn_n the car traffic light switches to yellow blinking
+--then keeps yellow blinking for a specific time
+--then switches to red and the pedestrian light switches to green for a specific time
+--then it switches again to yellow blinking and the pedestrian light to red for a specific time
+--then swittches to IDLE state again (pedestrian stays red and traffic light is green again)
+
 --TODO: Implement the model (5 step process!!!)
 architecture beh of traffic_light is 
 begin 
