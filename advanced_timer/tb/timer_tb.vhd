@@ -67,7 +67,7 @@ begin
 end architecture;
 
 architecture tb2 of timer_tb is 
-    constant CLK_FREQ : integer := 50_000_000; 
+    constant CLK_FREQ : integer := 100; --50_000_000; 
     constant clk_period : time := 1 sec / CLK_FREQ;
 
     signal btn_n    : std_ulogic := '1'; 
@@ -110,7 +110,8 @@ begin
     btn_n <= '1';
     wait for 10*clk_period;
 
-    wait for 1000*clk_period;
+    --wait for 1000*clk_period;
+    wait until ssd = SSD_CHAR_OFF;
 
     clk_stop <= '1';
     report "sim done";
