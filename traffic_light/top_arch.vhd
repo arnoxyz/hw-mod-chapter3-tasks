@@ -2,16 +2,14 @@ library ieee;
 use ieee.std_logic_1164.all;
 use work.math_pkg.all;
 
-
---TODO: test design on real hw (FPGA board)
-
-
-
 architecture arch of top is
 	constant WAIT_TIME : integer := 5;
 	constant CLK_FREQ : integer := 50_000_000;
 begin
 
+--TODO: change entity to work with my new entity
+--TODO: test on the fpga board
+/*
 	traffic_light_inst: entity work.traffic_light
 	generic map (
 		WAIT_TIME => WAIT_TIME,
@@ -30,5 +28,5 @@ begin
 		cyell  => ledr(1),
 		cgreen => ledr(2)
 	);
-
+*/
 end architecture;

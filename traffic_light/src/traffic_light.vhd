@@ -12,28 +12,21 @@ entity traffic_light is
 	port (
 		clk        : in std_ulogic;
 		res_n      : in std_ulogic;
-		-- debugging via oscilloscope
-		clk_cnt_lb : out std_logic_vector(7 downto 0);
-		-- pedestrian traffic light
-		btn_n      : in std_ulogic;
-		pred       : out std_ulogic;
-		pgreen     : out std_ulogic;
-		-- car traffic light
-		cred       : out std_ulogic;
-		cyell      : out std_ulogic;
-		cgreen     : out std_ulogic
+    btn_n      : in std_ulogic; --low active btn for pedestrian
+    pl         : out std_ulogic_vector(1 downto 0); --(green, red), pl=pedestrian light (pedestrian traffic light)
+    tl         : out std_ulogic_vector(2 downto 0) --(green, yellow, red), tl=traffic light (car traffic light)
 	);
 end entity;
 
---Repeat the modelling process (understand the traffic_light model)
---IDLE = no pedestraian, car traffic is just green
---after pedestrian presses the btn_n the car traffic light switches to yellow blinking
---then keeps yellow blinking for a specific time
---then switches to red and the pedestrian light switches to green for a specific time
---then it switches again to yellow blinking and the pedestrian light to red for a specific time
---then swittches to IDLE state again (pedestrian stays red and traffic light is green again)
-
---TODO: Implement the model (5 step process!!!)
 architecture beh of traffic_light is 
+  --state names are of the perspective of the car traffic light
+  type fsm_state_t is (IDLE, BLINK_GREEN_ON, BLINK_GREEN_OFF, YELLOW1, RED, YELLOW2);
+  type fsm_reg_t is record
+    state : fsm_state_t;
+    sec_cnt : unsigned(2 downto 0);
+    clk_cnt : unsigned(log2c(CLK_FREQ)-1 downto 0);
+  end record;
+  signal s, s_nxt : fsm_reg_t;
+  constant INIT_VAL : fsm_reg_t := (state=>IDLE, sec_cnt=>(others=>'0'), clk_cnt=>(others=>'0'));
 begin 
 end architecture;
