@@ -6,7 +6,7 @@ begin
 
 	led_controller : entity work.running_light
 	generic map(
-		STEP_TIME => 1 sec
+		WAIT_TIME => 1 sec
 	)
 	port map (
 		clk => clk,

@@ -5,52 +5,9 @@ entity running_light_tb is
 end entity;
 
 architecture arch of running_light_tb is
-	constant LEDS_WIDTH : integer := 8;
-	constant CLK_PERIOD : time := 20 ns; --fpga clk = 20ns
-	signal stop_clk : boolean := false;
-	signal clk, res_n : std_ulogic;
-	signal leds : std_ulogic_vector(LEDS_WIDTH-1 downto 0);
 begin
-
-	uut : entity work.running_light
-	generic map (
-		STEP_TIME => 100 ns
-	)
-	port map (
-		clk => clk,
-		res_n => res_n,
-		leds => leds
-	);
-
-	clk_gen : process is
-	begin
-		clk <= '0';
-		wait for CLK_PERIOD/2;
-		clk <= '1';
-		wait for CLK_PERIOD/2;
-		if stop_clk = true then 
-			wait;
-		end if;
-	end process;
-
-	stimulus : process is
-	begin 
-		report "start sim";
-
-		--reset
-		res_n <= '0'; 
-		wait for 3 * CLK_PERIOD;
-
-		res_n <= '1';
-		wait for 100 * CLK_PERIOD;
-
-		stop_Clk <= true;
-		report "sim done";
-		wait;
-	end process;
-
-
-
-
+  --TODO: UUT
+  --TODO: clk_gen
+  --TODO: stimuli
 end architecture;
 
