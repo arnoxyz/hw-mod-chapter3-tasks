@@ -23,7 +23,7 @@ architecture beh of traffic_light is
   type fsm_state_t is (IDLE, BLINK_GREEN_ON, BLINK_GREEN_OFF, YELLOW1, RED, YELLOW2);
   type fsm_reg_t is record
     state : fsm_state_t;
-    sec_cnt : unsigned(2 downto 0);
+    sec_cnt : unsigned(3 downto 0);
     clk_cnt : unsigned(log2c(CLK_FREQ)-1 downto 0);
   end record;
   signal s, s_nxt : fsm_reg_t;
@@ -62,7 +62,7 @@ begin
 
         if s.clk_cnt >= CLK_FREQ then 
           s_nxt.state <= BLINK_GREEN_OFF;
-          s_nxt.sec_cnt <= s_nxt.sec_cnt + 1;
+          s_nxt.sec_cnt <= s.sec_cnt + 1;
           s_nxt.clk_cnt <= (others => '0');
         end if;
 
@@ -72,7 +72,7 @@ begin
 
         if s.clk_cnt >= CLK_FREQ then 
           s_nxt.state <= BLINK_GREEN_ON;
-          s_nxt.sec_cnt <= s_nxt.sec_cnt + 1;
+          s_nxt.sec_cnt <= s.sec_cnt + 1;
           s_nxt.clk_cnt <= (others => '0');
         end if;
 
@@ -87,13 +87,14 @@ begin
       end if;
 
       if s.clk_cnt >= CLK_FREQ then 
-        s_nxt.sec_cnt <= s_nxt.sec_cnt + 1;
+        s_nxt.sec_cnt <= s.sec_cnt + 1;
         s_nxt.clk_cnt <= (others => '0');
       end if;
 
       when RED=>
       pl <= "10"; 
       tl <= "001";
+      s_nxt.clk_cnt <= s.clk_cnt + 1;
 
       if to_integer(s.sec_cnt) >= WAIT_TIME then 
         s_nxt.state <= YELLOW2;
@@ -102,13 +103,14 @@ begin
       end if;
 
       if s.clk_cnt >= CLK_FREQ then 
-        s_nxt.sec_cnt <= s_nxt.sec_cnt + 1;
+        s_nxt.sec_cnt <= s.sec_cnt + 1;
         s_nxt.clk_cnt <= (others => '0');
       end if;
 
       when YELLOW2=>
       pl <= "01"; 
       tl <= "010";
+      s_nxt.clk_cnt <= s.clk_cnt + 1;
 
       if to_integer(s.sec_cnt) >= WAIT_TIME then 
         s_nxt.state <= IDLE;
@@ -117,7 +119,7 @@ begin
       end if;
 
       if s.clk_cnt >= CLK_FREQ then 
-        s_nxt.sec_cnt <= s_nxt.sec_cnt + 1;
+        s_nxt.sec_cnt <= s.sec_cnt + 1;
         s_nxt.clk_cnt <= (others => '0');
       end if;
     end case;

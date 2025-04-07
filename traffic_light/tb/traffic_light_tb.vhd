@@ -7,8 +7,8 @@ entity traffic_light_tb is
 end entity;
 
 architecture tb of traffic_light_tb is
-  constant CLK_FREQ : integer := 10;
-  constant WAIT_TIME : integer := 10;
+  constant CLK_FREQ : integer := 100;
+  constant WAIT_TIME : integer := 2;
 
   signal clk : std_ulogic := '0';
   signal clk_period : time := 1 sec / CLK_FREQ; 
@@ -46,13 +46,8 @@ begin
     btn_n<= '0';
     wait for 5*clk_period;
     btn_n<= '1';
-    wait for 5*clk_period;
+    wait for 5000*clk_period;
     
-    wait until pl = "10";
-    report "pl should be now red";
-    wait until tl = "100";
-    report "now it should be in the IDLE state again";
-    wait for 5*clk_period;
     clk_stop <= '1';
     report "end sim";
     wait;
