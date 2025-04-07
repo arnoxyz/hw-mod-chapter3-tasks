@@ -30,9 +30,7 @@ architecture beh of timer is
   constant reset_val : record_t := (state => IDLE, clk_cnt => (others=>'0'), sec_cnt => (others=>'0'));
 
   constant COUNT_TO : integer := 2; --15 normally for sim 2
-
 begin 
-  
   sync : process(clk, res_n) is 
   begin 
     if res_n = '0' then 
@@ -74,3 +72,40 @@ begin
     end case;
   end process;
 end architecture;
+
+
+
+architecture beh2 of timer is 
+  type fsm_state_t is (IDLE, COUNT, ADD_SEC);
+  type fsm_reg_t is record
+    state : fsm_state_t; 
+    clk_cnt : unsigned(log2c(CLK_FREQ)-1 downto 0);
+    sec_cnt : std_ulogic_vector(3 downto 0);
+  end record;
+
+  signal s, s_nxt : fsm_reg_t;
+  constant RESET_VAL : fsm_reg_t := (state => IDLE, clk_cnt => (others => '0'), sec_cnt => (others => '0'));
+begin 
+
+  sync : process(clk, res_n) is
+  begin 
+    if res_n = '0' then    
+      s <= RESET_VAL;
+    elsif rising_edge(clk) then 
+      s <= s_nxt;
+    end if;
+  end process;
+
+  comb : process(all) is 
+  begin 
+    s_nxt <= s;
+    ssd <= to_segs(s.sec_cnt);
+
+    case s.state is 
+        when IDLE     => 
+        when COUNT    => 
+        when ADD_SEc  => 
+    end case;
+  end process;
+end architecture;
+
