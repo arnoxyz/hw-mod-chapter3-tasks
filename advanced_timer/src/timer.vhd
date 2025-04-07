@@ -103,8 +103,29 @@ begin
 
     case s.state is 
         when IDLE     => 
+          ssd <= SSD_CHAR_OFF;
+
+          if btn_n = '0' then 
+            s_nxt.state <= COUNT;
+          end if;
+
         when COUNT    => 
-        when ADD_SEc  => 
+          s_nxt.clk_cnt <= s.clk_cnt + 1;
+
+          if to_integer(s.clk_cnt) >= CLK_FREQ then 
+            s_nxt.state <= ADD_SEC;
+          end if;
+
+        when ADD_SEC  => 
+          s_nxt.clk_cnt <= (others => '0');
+          s_nxt.sec_cnt <= std_ulogic_vector(unsigned(s.sec_cnt) + 1);
+
+          if unsigned(s.sec_cnt) >= 15 then 
+            s_nxt.state <= IDLE;
+            s_nxt.sec_cnt <= (others => '0');
+          else 
+            s_nxt.state <= COUNT;
+          end if; 
     end case;
   end process;
 end architecture;
