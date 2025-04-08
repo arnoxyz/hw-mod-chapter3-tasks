@@ -6,7 +6,7 @@ use work.math_pkg.all;
 entity running_light is
 	generic (
 		WAIT_TIME  : time := 1 sec;
-		CLK_FREQ   : integer := 5_000_000 
+		CLK_FREQ   : integer := 50_000_000 
 	);
 	port (
 		clk      : in std_ulogic;
@@ -26,8 +26,9 @@ architecture beh of running_light is
 
   signal s, s_nxt : fsm_reg_t; 
   constant RESET_VAL : fsm_reg_t := (state=>START, clk_cnt=>(others=>'0'), leds=>(7=>'1', others=>'0'));
-  constant CLK_PERIOD : time := 1 sec / CLK_FREQ;
-  constant CC_WAIT : integer := WAIT_TIME / CLK_PERIOD; --clock_cycles_wait
+
+  constant CLK_PERIOD : time := 1 sec / CLK_FREQ; -- 1_000_000_000 ps
+  constant CC_WAIT : integer := (CLK_PERIOD / WAIT_TIME); --clock_cycles_wait, 
 begin
   
   sync : process(clk, res_n) is  
