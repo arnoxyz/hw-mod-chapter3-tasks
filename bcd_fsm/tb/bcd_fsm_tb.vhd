@@ -8,33 +8,45 @@ entity bcd_fsm_tb is
 end entity;
 
 architecture tb of bcd_fsm_tb is
-	signal clk, res_n : std_ulogic := '0';
+  constant CLK_FREQ : integer := 10000;
+  constant CLK_PERIOD : time := 1 sec / clk_freq; 
+
+  signal clk_stop : std_ulogic := '0';
+	signal clk : std_ulogic := '0';
+  signal res_n : std_ulogic := '1';
 	signal input_data : std_ulogic_vector(15 downto 0);
 	signal signed_mode : std_ulogic;
 	signal hex_digit1000, hex_digit100, hex_digit10, hex_digit1, hex_sign: std_ulogic_vector(6 downto 0);
+
 begin
 
-	dut : entity work.bcd_fsm
+	uut : entity work.bcd_fsm(beh)
 		port map (
 			clk           => clk,
 			res_n         => res_n,
 			input_data    => input_data,
-			signed_mode   => signed_mode,
 			hex_digit1000 => hex_digit1000,
 			hex_digit100  => hex_digit100,
 			hex_digit10   => hex_digit10,
-			hex_digit1    => hex_digit1,
-			hex_sign      => hex_sign
+			hex_digit1    => hex_digit1
 		);
 
-	clk_process : process
+	clk_gen : process
 	begin
-		-- TODO: Generate a clock signal
+    wait for CLK_PERIOD / 2;    
+    clk <= '0';
+    wait for CLK_PERIOD / 2;    
+    clk <= '1';
+
+    if clk_stop = '1' then 
+      wait;
+    end if;
 	end process;
 
-	stimulus_process : process
+	stimulu : process
 	begin
-			-- TODO: Implement the test cases
+    report "sim start";
+    res_n <= '0';
+    wait;
 	end process;
-
 end architecture;
