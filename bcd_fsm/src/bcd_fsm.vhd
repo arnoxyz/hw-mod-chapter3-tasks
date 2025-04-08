@@ -21,6 +21,7 @@ architecture beh of bcd_fsm is
   type fsm_reg_t is record 
     state : fsm_state_t;
     data : std_ulogic_vector(15 downto 0);
+    data_nxt : std_ulogic_vector(15 downto 0);
     hex1 : std_ulogic_vector(6 downto 0);
     hex2 : std_ulogic_vector(6 downto 0);
     hex3 : std_ulogic_vector(6 downto 0);
@@ -44,6 +45,8 @@ begin
   comb : process(all) is 
   begin 
     s_nxt <= s;
+    s_nxt.data <= input_data;
+    s_nxt.data_nxt <= s.data;
     hex_digit1 <= s.hex1;
     hex_digit10 <= s.hex2;
     hex_digit100 <= s.hex3;
@@ -51,17 +54,13 @@ begin
 
     case s.state is 
       when IDLE => 
-        report "im in idle";
-
-        if unsigned(s.data) /= unsigned(input_data) then 
+        if unsigned(s.data) /= unsigned(s.data_nxt) then 
           s_nxt.data <= input_data; --sample input data
           s_nxt.state <= SUB1;
         end if;
 
       when SUB1 => 
         --sub 1000, to get digit1000 and save it into hex4
-        report "im in sub1";
-
         if unsigned(s.data) < 1000 then 
           s_nxt.state <= SUB2; 
         else 
