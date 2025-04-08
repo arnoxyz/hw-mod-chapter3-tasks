@@ -24,8 +24,9 @@ architecture beh of running_light is
     leds : std_ulogic_vector(7 downto 0);
   end record;
 
-  signal s, s_nxt : fsm_reg_t; 
   constant RESET_VAL : fsm_reg_t := (state=>START, clk_cnt=>(others=>'0'), leds=>(7=>'1', others=>'0'));
+  signal s : fsm_reg_t := RESET_VAL;
+  signal s_nxt : fsm_reg_t; 
 
   constant CLK_PERIOD : time := 1 sec / CLK_FREQ; -- 1_000_000_000 ps
   constant CC_WAIT : integer := (CLK_PERIOD / WAIT_TIME); --clock_cycles_wait, 
@@ -43,11 +44,12 @@ begin
   comb : process(all) is 
   begin 
   s_nxt <= s;
-  s_nxt.clk_cnt <= s.clk_cnt + 1;
+  s_nxt.clk_cnt <= s.clk_cnt+1;
   leds <= s.leds;
 
   case s.state is 
     when START   => 
+      report to_string(s.clk_cnt);
       if to_integer(s.clk_cnt) >= CC_WAIT then 
         s_nxt.clk_cnt <= (others=>'0');
 
@@ -58,6 +60,7 @@ begin
           s_nxt.leds <= std_ulogic_vector(shift_right(unsigned(s.leds), 1)); 
         end if;
       end if;
+
   end case;
   end process;
 end architecture;
