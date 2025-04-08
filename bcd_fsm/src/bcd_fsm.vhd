@@ -51,6 +51,8 @@ begin
 
     case s.state is 
       when IDLE => 
+        report "im in idle";
+
         if unsigned(s.data) /= unsigned(input_data) then 
           s_nxt.data <= input_data; --sample input data
           s_nxt.state <= SUB1;
@@ -58,6 +60,8 @@ begin
 
       when SUB1 => 
         --sub 1000, to get digit1000 and save it into hex4
+        report "im in sub1";
+
         if unsigned(s.data) < 1000 then 
           s_nxt.state <= SUB2; 
         else 
@@ -71,16 +75,16 @@ begin
           s_nxt.state <= SUB3; 
         else 
           s_nxt.data <= std_ulogic_vector(unsigned(s.data) - 100);
-          s_nxt.hex4 <= std_ulogic_vector(unsigned(s.hex3) + 1);
+          s_nxt.hex3 <= std_ulogic_vector(unsigned(s.hex3) + 1);
         end if;
 
       when SUB3 => 
         --sub 10, to get digit10 and save it into hex2
         if unsigned(s.data) < 10 then 
-          s_nxt.state <= SUB2; 
+          s_nxt.state <= SUB4; 
         else 
           s_nxt.data <= std_ulogic_vector(unsigned(s.data) - 10);
-          s_nxt.hex4 <= std_ulogic_vector(unsigned(s.hex2) + 1);
+          s_nxt.hex2 <= std_ulogic_vector(unsigned(s.hex2) + 1);
         end if;
 
       when SUB4 => 
@@ -89,7 +93,7 @@ begin
           s_nxt.state <= IDLE; 
         else 
           s_nxt.data <= std_ulogic_vector(unsigned(s.data) - 1);
-          s_nxt.hex4 <= std_ulogic_vector(unsigned(s.hex1) + 1);
+          s_nxt.hex1 <= std_ulogic_vector(unsigned(s.hex1) + 1);
         end if;
     end case;
   end process;
