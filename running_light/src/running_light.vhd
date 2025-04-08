@@ -43,8 +43,8 @@ begin
   comb : process(all) is 
   begin 
   s_nxt <= s;
-  leds <= (others=>'1'); --zeigt fehler auf und sollte nicht vorkommen
   s_nxt.clk_cnt <= s.clk_cnt + 1;
+  leds <= s.leds;
 
   case s.state is 
     when START   => 

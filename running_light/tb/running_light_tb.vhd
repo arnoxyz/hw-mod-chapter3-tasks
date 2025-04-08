@@ -6,7 +6,7 @@ end entity;
 
 architecture tb of running_light_tb is
 		constant WAIT_TIME  : time := 1 ns;
-		constant CLK_FREQ   : integer := 1000; --5_000_000; 
+		constant CLK_FREQ   : integer := 50_000_000; --5_000_000; 
     constant CLK_PERIOD : time := 1 ns; --1 sec / CLK_FREQ;
     signal clk_stop : std_ulogic := '0';
 
