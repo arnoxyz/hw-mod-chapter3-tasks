@@ -45,8 +45,8 @@ begin
   comb : process(all) is 
   begin 
     s_nxt <= s;
-    s_nxt.data <= input_data;
-    s_nxt.data_nxt <= s.data;
+    s_nxt.data_nxt <= input_data;
+
     hex_digit1 <= s.hex1;
     hex_digit10 <= s.hex2;
     hex_digit100 <= s.hex3;
@@ -54,7 +54,7 @@ begin
 
     case s.state is 
       when IDLE => 
-        if unsigned(s.data) /= unsigned(s.data_nxt) then 
+        if unsigned(s.data_nxt) /= unsigned(input_data) then 
           s_nxt.data <= input_data; --sample input data
           s_nxt.state <= SUB1;
         end if;
