@@ -27,8 +27,9 @@ architecture beh of bcd_fsm is
     hex4 : std_ulogic_vector(6 downto 0);
   end record;
 
-  signal s, s_nxt : fsm_reg_t;
   constant RESET_VAL : fsm_reg_t := (state => IDLE, others => (others => '0'));
+  signal s : fsm_reg_t := RESET_VAL;
+  signal s_nxt : fsm_reg_t;
 begin
    
   sync : process(clk, res_n) is 
