@@ -33,18 +33,28 @@ end entity;
 
 
 architecture arch of sram_ctrl is
-	-- TODO: Add required types and signals
+  type fsm_state_t is (IDLE, TEST1);
+
+  type fsm_reg_t is record
+    state : fsm_state_t; 
+  end record;
+
+  signal s, s_nxt : fsm_reg_t;
+
+  constant RESET_VAL : fsm_reg_t := (state => IDLE);
 begin
 
 	sync : process(clk, res_n)
 	begin
-		-- TODO: Implement state register
+    if res_n = '0' then 
+      s <= RESET_VAL;
+    elsif rising_edge(clk) then 
+      s <= s_nxt;
+    end if;
 	end process;
 
 	comb : process(all)
 	begin
-		-- TODO: Implement output and next-state logic
 	end process;
-
 end architecture;
 
